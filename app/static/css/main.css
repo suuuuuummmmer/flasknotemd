@@ -1,0 +1,25 @@
+body{
+    max-width: 80%;
+    margin: 0 auto;
+    font-family: sans-serif;
+    text-align: center;
+
+}
+table{
+    margin:auto;
+    text-align: center;
+
+}
+
+td{
+    text-align: center;
+    padding: 5px;
+
+
+}
+.form{
+    margintop:20px;
+}
+#content{
+    width: 40%;
+}

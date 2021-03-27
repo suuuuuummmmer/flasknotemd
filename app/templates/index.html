@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+
+
+{% block content %}
+    <style>
+        .container {
+            width: 85%;
+            margin: auto;
+
+                    }
+
+    </style>
+
+    <div class="container">
+        <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class="panel-heading"><h4>Task Create</h4></div>
+
+
+            <!-- Table -->
+            <table class="table table-bordered">
+                <br>
+{#                    结合FlaskForm和flask-bootstrap做美化#}
+                <form action="" method="post">
+                    {{ form.hidden_tag() }}
+                    <div class="inform-group">
+                        <div style="display: inline-block; width:10%; text-align: right">
+                            {{ form.task.label }}
+                        </div>
+
+                        {{ form.task(size='50%') }}
+                        {% for error in form.task.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                    <br>
+                    <div class="inform-group">
+                        <div style="display: inline-block; width:10%;text-align: right">
+                            {{ form.creator.label }}
+                        </div>
+                        {{ form.creator(size="20%") }}
+                        {% for error in form.creator.errors %}
+                            {{ error }}
+                        {% endfor %}
+                        <div style="display: inline-block; width:10%;text-align: right">
+                            {{ form.assign.label }}
+                        </div>
+                        {{ form.assign(size="20%") }}
+                        {% for error in form.assign.errors %}
+                            {{ error }}
+                        {% endfor %}
+
+                    </div>
+                    <br>
+                    <div class="inform-group">
+
+                        <div style="display: inline-block; width:10%;text-align: right">
+                            {{ form.endtime.label }}
+                        </div>
+                        {{ form.endtime(type="date") }}
+                        {% for error in form.endtime.errors %}
+                            {{ error }}
+                        {% endfor %}
+                        <div style="display: inline-block; width:19%; text-align: right">
+                            {{ form.status.label }}
+                        </div>
+                        {{ form.status }}
+                        {% for error in form.status.errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </div>
+                    <br>
+                    <div style="width: 49%; float: right">
+                        {{ form.submit }}
+                        <input type="reset" value="重置">
+                    </div>
+                    <br><br>
+
+
+                </form>
+            </table>
+        </div>
+    </div>
+    </div>
+
+{#        利用简单的bootstrap wtf获取form#}
+{#    <div class="container">#}
+{#        <div class="panel panel-default">#}
+{#            <!-- Default panel contents -->#}
+{#            <div class="panel-heading"><h4>Task Create</h4></div>#}
+{#                {% if form %}#}
+{#                    <div class="row">#}
+{#                        <div class="col-md-4">#}
+{#                            <form action="" class="form-inline" role="form">#}
+{#                                {{ wtf.quick_form(form) }}#}
+{##}
+{#                            </form>#}
+{##}
+{##}
+{#                        </div>#}
+{#                    </div>#}
+{##}
+{#                <br>#}
+{#                {% endif %}#}
+{#        </div>#}
+{#    </div>#}
+{#    </div>#}
+    {#    利用模板来获取表单#}
+    {#        <form action="" method="post">#}
+    {#            {{ form.hidden_tag() }}#}
+    {#            {{ form.task.label }} {{ form.task }}#}
+    {#            {{ form.creator.label }}{{ form.creator }}#}
+    {#            {{ form.assign.label }}{{ form.assign }}#}
+    {#            {{ form.endtime.label }}{{ form.endtime }}#}
+    {#            {{ form.status.label }}{{ form.status }}#}
+    {#            {{ form.submit }}#}
+    {##}
+    {#        </form>#}
+    {#        <form action="/" method="POST">#}
+    {#            <input type="text" name="content" id="content">#}
+    {#            <input type="submit" value="Add Task">#}
+    {#        </form>#}
+<div class="container">
+
+
+    {% if tasks|length <1 %}
+        <h4>There are no tasks. Create one below</h4>
+    {% else %}
+
+        <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class="panel-heading"><h4>Task info</h4></div>
+
+
+            <!-- Table -->
+            <table class="table table-bordered">
+                <tr>
+                    <th style="width: 3%">Num</th>
+                    <th style="width: 30%">Task</th>
+                    <th style="width: 5%">Creator</th>
+                    <th style="width: 5%">Assignee</th>
+                    <th style="width: 10%">Create Time</th>
+                    <th style="width: 13%">Last Update Time</th>
+                    <th style="width: 13%">Plan Finish Time</th>
+                    <th style="width: 5%">Process</th>
+                    <th style="width: 5%">Actions</th>
+                </tr>
+                {% for task in tasks %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ task.content }}</td>
+                        <td>{{ task.creator }}</td>
+                        <td>{{ task.assignee }}</td>
+                        <td>{{ task.date_created.date() }}</td>
+                        {% if task.update_time %}
+                            <td>{{ task.update_time.date() }}</td>
+                        {% else %}
+                            <td></td>
+                        {% endif %}
+                        <td>{{ task.plan_endtime.date() }}</td>
+                        <td>{{ task.status }}</td>
+                        <td>
+                            <a href="/delete/{{ task.id }}">Delete</a>
+                            <br>
+                            <a href="/update/{{ task.id }}">Update</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+        </div>
+    {% endif %}
+    </div>
+{% endblock %}

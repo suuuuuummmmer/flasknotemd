@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+{% block content %}
+    <style>
+        tabel{
+            margin: 0 auto;
+
+        }
+        .block {
+            width: 85%;
+            display: block;
+            margin: 5px 0;
+        }
+
+        label {
+            display: inline-block;
+            width: 100px;
+            text-align: right;
+            margin: 0 10px;
+        }
+
+        input, textarea {
+            vertical-align: top;
+        }
+
+        .submit {
+            width:50%;
+            float: right;
+        }
+    </style>
+    <div class="container">
+        <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class="panel-heading"><h4>Update Task</h4></div>
+
+
+            <!-- Table -->
+            <table class="table table-bordered">
+                <br>
+
+                {#            <div class="row">#}
+                {#                <div class="col-md-8">#}
+                {#                    <form action="" class="form-inline" role="form">#}
+                {#                        {{ wtf.quick_form(form,form_type='horizontal',horizontal_columns=('lg', 4, 6)) }}#}
+                {#                        {{ form.task.label }}{{ form.task }}#}
+                {#                    </form>#}
+
+                {#                </div>#}
+                {#            </div>#}
+
+                {#        <br>#}
+
+
+                <form action="/update/{{ task.id }}" method="POST">
+                    <div class="block">
+                        <label for="">Content:</label><textarea rows=2 cols=65 name="content"
+                                                                id="content">{{ task.content }}</textarea>
+                    </div>
+                    <br>
+                    <div class="block">
+                        <label>Creator:</label><input disabled="disabled" type="text" name="creator" id="creator"
+                                                      value="{{ task.creator }}">
+                        <label>Assignee:</label><input type="text" name="assignee" id="assignee"
+                                                       value="{{ task.assignee }}">
+                    </div>
+                    <br>
+                    <div class="block">
+                        <label for="">Create Time:</label><input disabled="disabled" type="text" name="createtime" id="createtime"
+                                                                 value="{{ task.date_created.date() }}">
+
+                        <label for="">End Time:</label><input type="text" name="endtime" id="endtime"
+                                                              value="{{ task.plan_endtime.date() }}">
+                    </div>
+                    <br>
+                    <div class="block">
+                        <label for="">Status:</label>
+                        <select name="status" id="status" >
+                            <option value="Create" {% if task.status=='Create' %} selected {% endif %}>Created</option>
+                            <option value="Process" {% if task.status=='Process' %} selected {% endif %}>Processed</option>
+                            <option value="Finish" {% if task.status=='Finish' %} selected {% endif %}>Finished</option>
+                        </select>
+                    </div>
+                    <br>
+                    <div class="block">
+                        <label for="">Comment:</label>
+                        <textarea name="comment" id="comment" cols="65" rows="3"></textarea>
+                    </div>
+                    <br>
+                    <div class="submit">
+                        <input type="submit" value="Update">
+                    </div>
+
+                </form>
+{#                {% if comments|length>0 %}#}
+                <br>
+                <br>
+                    {% for comment in comments %}
+                        <div class="block">
+                            <label for="comment">Comment{{ loop.index }}:</label>
+                            <textarea disabled="disabled" cols="65" rows="3">{{ comment.timestamp }}:{{ comment.body }}</textarea>
+                            <br>
+                        </div>
+                    {% endfor %}
+
+{#                {% endif %}#}
+            </table>
+        </div>
+    </div>
+{% endblock %}
